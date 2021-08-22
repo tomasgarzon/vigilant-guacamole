@@ -1,0 +1,22 @@
+
+# MaritalStatusEnum
+
+## Enum
+
+
+    * `nOTDISCLOSED` (value: `"NOT_DISCLOSED"`)
+
+    * `sINGLE` (value: `"SINGLE"`)
+
+    * `mARRIEDCIVILPARTNER` (value: `"MARRIED_CIVIL_PARTNER"`)
+
+    * `cIVILPARTNER` (value: `"CIVIL_PARTNER"`)
+
+    * `dIVORCEDDISSOLVEDCIVILPARTNERSHIP` (value: `"DIVORCED_DISSOLVED_CIVIL_PARTNERSHIP"`)
+
+    * `wIDOWEDSURVIVINGCIVILPARTNER` (value: `"WIDOWED_SURVIVING_CIVIL_PARTNER"`)
+
+    * `sEPARATED` (value: `"SEPARATED"`)
+
+
+
