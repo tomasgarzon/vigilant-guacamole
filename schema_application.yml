@@ -25,9 +25,12 @@ paths:
         schema:
           type: string
           enum:
+          - de-ch
           - en-ch
           - en-gb
+          - es-es
           - fr-ch
+          - it-ch
       tags:
       - api
       security:
@@ -4745,6 +4748,11 @@ paths:
             >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
       parameters:
       - in: query
+        name: client
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: external_custodian_id
         schema:
           type: string
@@ -4754,10 +4762,32 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
       - name: offset
         required: false
         in: query
         description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -name
+            - -risk_level
+            - name
+            - risk_level
+        description: Ordering
+        explode: false
+        style: form
+      - in: query
+        name: portfolio_type
         schema:
           type: integer
       - in: path
@@ -8235,6 +8265,21 @@ components:
           nullable: true
           title: Name [fr-ch]
           maxLength: 150
+        name_de_ch:
+          type: string
+          nullable: true
+          title: Name [de-ch]
+          maxLength: 150
+        name_es_es:
+          type: string
+          nullable: true
+          title: Name [es-es]
+          maxLength: 150
+        name_it_ch:
+          type: string
+          nullable: true
+          title: Name [it-ch]
+          maxLength: 150
         long_name:
           type: string
           maxLength: 250
@@ -8252,6 +8297,21 @@ components:
           type: string
           nullable: true
           title: Long name [fr-ch]
+          maxLength: 250
+        long_name_de_ch:
+          type: string
+          nullable: true
+          title: Long name [de-ch]
+          maxLength: 250
+        long_name_es_es:
+          type: string
+          nullable: true
+          title: Long name [es-es]
+          maxLength: 250
+        long_name_it_ch:
+          type: string
+          nullable: true
+          title: Long name [it-ch]
           maxLength: 250
         eea_country:
           type: boolean
@@ -11028,6 +11088,8 @@ components:
         advice_engine:
           type: string
           nullable: true
+        client:
+          type: string
       required:
       - balance
       - created
@@ -11048,6 +11110,8 @@ components:
           type: string
           format: uuid
           readOnly: true
+        client:
+          type: string
         name:
           type: string
           readOnly: true
@@ -12077,7 +12141,7 @@ components:
     jwtAuth:
       type: http
       scheme: bearer
-      bearerFormat: Bearer
+      bearerFormat: JWT
     oauth2:
       type: oauth2
       flows: {}

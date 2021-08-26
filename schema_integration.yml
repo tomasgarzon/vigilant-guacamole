@@ -1,0 +1,6182 @@
+openapi: 3.0.3
+info:
+  title: Nucoro API v2
+  version: 1.0.0
+  description: No description
+paths:
+  /api/v2/integration/account/clients/:
+    get:
+      operationId: account_clients_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: external_custodian_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional client attributes for the specific portal
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -activated
+            - -created
+            - -first_name
+            - -last_name
+            - -risk_level
+            - -status
+            - activated
+            - created
+            - first_name
+            - last_name
+            - risk_level
+            - status
+        description: Ordering
+        explode: false
+        style: form
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - ACTIVE
+          - CUSTODIAN_PENDING
+          - INACTIVE
+          - KYC_PENDING
+          - ONBOARDING
+          - PENDING
+      tags:
+      - account
+      security:
+      - oauth2:
+        - v2:integration:account:client:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedClientList'
+          description: ''
+  /api/v2/integration/account/clients/{uuid}/:
+    get:
+      operationId: account_clients_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      security:
+      - oauth2:
+        - v2:integration:account:client:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+    put:
+      operationId: account_clients_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntegrationClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntegrationClientUpdate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:account:client:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationClientUpdate'
+          description: ''
+    patch:
+      operationId: account_clients_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedIntegrationClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedIntegrationClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedIntegrationClientUpdate'
+      security:
+      - oauth2:
+        - v2:integration:account:client:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationClientUpdate'
+          description: ''
+  /api/v2/integration/account/clients/{uuid}/set-password/:
+    put:
+      operationId: account_clients_set_password_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Client'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Client'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:account:client:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+  /api/v2/integration/account/documents/:
+    get:
+      operationId: account_documents_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: client
+        schema:
+          type: integer
+      - in: query
+        name: description
+        schema:
+          type: string
+      - in: query
+        name: doc_type
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BANK_DETAILS
+            - CONTRACT
+            - EMPLOYMENT
+            - ID_PERSONAL
+            - LEGAL
+            - MARITAL_STATUS
+            - MEDICAL
+            - OTHERS
+            - PENSION
+            - TRANSFERS
+        explode: true
+        style: form
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional document attributes for the specific portal
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - account
+      security:
+      - oauth2:
+        - v2:integration:account:document:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDocumentListList'
+          description: ''
+    post:
+      operationId: account_documents_create
+      description: |-
+        Uploads a document for a client
+
+        This call expects file and parameters being sent as form/multipart
+        encoding.
+      tags:
+      - account
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DocumentCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentCreate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:account:document:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCreate'
+          description: ''
+  /api/v2/integration/account/documents/{uuid}/:
+    get:
+      operationId: account_documents_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      security:
+      - oauth2:
+        - v2:integration:account:document:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentList'
+          description: ''
+    patch:
+      operationId: account_documents_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDocumentUpdate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDocumentUpdate'
+      security:
+      - oauth2:
+        - v2:integration:account:document:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUpdate'
+          description: ''
+    delete:
+      operationId: account_documents_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - account
+      security:
+      - oauth2:
+        - v2:integration:account:document:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/advice-engines/model-portfolio/model_portfolios/:
+    get:
+      operationId: advice_engines_model_portfolio_model_portfolios_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional ModelPortfolio attributes
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: risk_higher
+        schema:
+          type: integer
+      - in: query
+        name: risk_level
+        schema:
+          type: integer
+      - in: query
+        name: risk_lower
+        schema:
+          type: integer
+      tags:
+      - advice-engines
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedModelPortfolioList'
+          description: ''
+    post:
+      operationId: advice_engines_model_portfolio_model_portfolios_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - advice-engines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPortfolio'
+          description: ''
+  /api/v2/integration/advice-engines/model-portfolio/model_portfolios/{uuid}/:
+    get:
+      operationId: advice_engines_model_portfolio_model_portfolios_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - advice-engines
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPortfolio'
+          description: ''
+    put:
+      operationId: advice_engines_model_portfolio_model_portfolios_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - advice-engines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModelPortfolio'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPortfolio'
+          description: ''
+    patch:
+      operationId: advice_engines_model_portfolio_model_portfolios_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - advice-engines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedModelPortfolio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedModelPortfolio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedModelPortfolio'
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelPortfolio'
+          description: ''
+    delete:
+      operationId: advice_engines_model_portfolio_model_portfolios_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - advice-engines
+      security:
+      - oauth2:
+        - v2:integration:advisor:model-portfolio:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/allocations/:
+    get:
+      operationId: allocations_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: asset
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: valuation_date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: valuation_date_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - allocations
+      security:
+      - oauth2:
+        - v2:integration:allocation:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAllocationList'
+          description: ''
+  /api/v2/integration/allocations/{uuid}/:
+    get:
+      operationId: allocations_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - allocations
+      security:
+      - oauth2:
+        - v2:integration:allocation:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+          description: ''
+  /api/v2/integration/asset/markets/:
+    get:
+      operationId: asset_markets_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: code
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:market:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMarketList'
+          description: ''
+  /api/v2/integration/asset/markets/{code}/:
+    get:
+      operationId: asset_markets_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: code
+        schema:
+          type: string
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:market:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Market'
+          description: ''
+  /api/v2/integration/asset/markets/{code}/holidays/:
+    get:
+      operationId: asset_markets_holidays_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: code
+        schema:
+          type: string
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:market:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Market'
+          description: ''
+  /api/v2/integration/asset/markets/{code}/partial-days/:
+    get:
+      operationId: asset_markets_partial_days_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: code
+        schema:
+          type: string
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:market:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Market'
+          description: ''
+  /api/v2/integration/asset/markets/{code}/special-days/:
+    get:
+      operationId: asset_markets_special_days_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: code
+        schema:
+          type: string
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:market:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketSpecialDay'
+          description: ''
+  /api/v2/integration/asset/prices-close/:
+    get:
+      operationId: asset_prices_close_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: currency
+        schema:
+          type: integer
+      - in: query
+        name: date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: datetime_after
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: datetime_before
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: isin
+        schema:
+          type: integer
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: market
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPriceList'
+          description: ''
+    post:
+      operationId: asset_prices_close_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/asset/prices-close/{uuid}/:
+    get:
+      operationId: asset_prices_close_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    put:
+      operationId: asset_prices_close_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    patch:
+      operationId: asset_prices_close_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    delete:
+      operationId: asset_prices_close_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/asset/prices-close/bulk-create/:
+    post:
+      operationId: asset_prices_close_bulk_create_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:create
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/asset/prices-close/bulk-update/:
+    put:
+      operationId: asset_prices_close_bulk_update_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-close:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/asset/prices-intraday/:
+    get:
+      operationId: asset_prices_intraday_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: currency
+        schema:
+          type: integer
+      - in: query
+        name: date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: datetime_after
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: datetime_before
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: isin
+        schema:
+          type: integer
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: market
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPriceList'
+          description: ''
+    post:
+      operationId: asset_prices_intraday_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/asset/prices-intraday/{uuid}/:
+    get:
+      operationId: asset_prices_intraday_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    put:
+      operationId: asset_prices_intraday_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    patch:
+      operationId: asset_prices_intraday_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPrice'
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+    delete:
+      operationId: asset_prices_intraday_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - asset
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/asset/prices-intraday/bulk-create/:
+    post:
+      operationId: asset_prices_intraday_bulk_create_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:create
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/asset/prices-intraday/bulk-update/:
+    put:
+      operationId: asset_prices_intraday_bulk_update_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - asset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Price'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Price'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Price'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:asset:price-intraday:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+          description: ''
+  /api/v2/integration/billing/charges/:
+    get:
+      operationId: billing_charges_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: charged_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: charged_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - CHARGED
+          - DELETED
+          - EXTERNAL_CHARGED
+          - PENDING
+          - REQUESTED
+      tags:
+      - billing
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedChargeList'
+          description: ''
+    post:
+      operationId: billing_charges_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Charge'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+  /api/v2/integration/billing/charges/{uuid}/:
+    get:
+      operationId: billing_charges_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - billing
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+    put:
+      operationId: billing_charges_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Charge'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+    delete:
+      operationId: billing_charges_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - billing
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/billing/charges/bulk-create/:
+    post:
+      operationId: billing_charges_bulk_create_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Charge'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:create
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+  /api/v2/integration/billing/charges/bulk-update/:
+    put:
+      operationId: billing_charges_bulk_update_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - billing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Charge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Charge'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:billing:charge:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+          description: ''
+  /api/v2/integration/broker/orders/:
+    get:
+      operationId: broker_orders_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: advice_external_id
+        schema:
+          type: string
+      - in: query
+        name: asset
+        schema:
+          type: string
+      - in: query
+        name: completed_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: completed_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional order attributes for the specific portal
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+      tags:
+      - broker
+      security:
+      - oauth2:
+        - v2:integration:broker:order:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderList'
+          description: ''
+    post:
+      operationId: broker_orders_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:broker:order:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v2/integration/broker/orders/{uuid}/:
+    get:
+      operationId: broker_orders_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      security:
+      - oauth2:
+        - v2:integration:broker:order:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: broker_orders_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:broker:order:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: broker_orders_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateOrder'
+      security:
+      - oauth2:
+        - v2:integration:broker:order:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrder'
+          description: ''
+  /api/v2/integration/broker/trades/:
+    get:
+      operationId: broker_trades_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: asset
+        schema:
+          type: string
+      - in: query
+        name: completed_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: completed_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - CANCELLED
+          - COMPLETED
+          - DRAFT
+          - ERROR
+          - PENDING
+          - PLACED
+          - PROCESSING
+          - QUOTED
+          - VERIFIED
+          - WAITING_FOR_PRICE
+      tags:
+      - broker
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTradeList'
+          description: ''
+    post:
+      operationId: broker_trades_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Trade'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+          description: ''
+  /api/v2/integration/broker/trades/{uuid}/:
+    get:
+      operationId: broker_trades_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+          description: ''
+    put:
+      operationId: broker_trades_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Trade'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+          description: ''
+    patch:
+      operationId: broker_trades_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateTrade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateTrade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUpdateTrade'
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTrade'
+          description: ''
+  /api/v2/integration/broker/trades/{uuid}/facilitate-completed-orders/:
+    post:
+      operationId: broker_trades_facilitate_completed_orders_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - broker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeFillByAmount'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradeFillByAmount'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradeFillByAmount'
+      security:
+      - oauth2:
+        - v2:integration:broker:trade:create
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeFillByAmount'
+          description: ''
+  /api/v2/integration/corporate-actions/cash/:
+    get:
+      operationId: corporate_actions_cash_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: asset
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: event
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - CAPITAL_GAINS_DISTRIBUTION
+            - CASH_DIVIDEND
+        explode: true
+        style: form
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: valuation_date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: valuation_date_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:cashcorporateaction:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCashCorporateActionList'
+          description: ''
+    post:
+      operationId: corporate_actions_cash_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - corporate-actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:cashcorporateaction:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashCorporateAction'
+          description: ''
+  /api/v2/integration/corporate-actions/cash/{uuid}/:
+    get:
+      operationId: corporate_actions_cash_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:cashcorporateaction:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashCorporateAction'
+          description: ''
+    put:
+      operationId: corporate_actions_cash_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CashCorporateAction'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:cashcorporateaction:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashCorporateAction'
+          description: ''
+    delete:
+      operationId: corporate_actions_cash_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:cashcorporateaction:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/corporate-actions/shares/:
+    get:
+      operationId: corporate_actions_shares_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: asset
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: event
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - REVERSE_SPLIT
+            - SPIN_OFF
+            - SPLIT
+            - STOCK_DIVIDEND
+        explode: true
+        style: form
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: valuation_date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: valuation_date_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:sharescorporateaction:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSharesCorporateActionList'
+          description: ''
+    post:
+      operationId: corporate_actions_shares_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - corporate-actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:sharescorporateaction:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharesCorporateAction'
+          description: ''
+  /api/v2/integration/corporate-actions/shares/{uuid}/:
+    get:
+      operationId: corporate_actions_shares_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:sharescorporateaction:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharesCorporateAction'
+          description: ''
+    put:
+      operationId: corporate_actions_shares_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SharesCorporateAction'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:sharescorporateaction:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharesCorporateAction'
+          description: ''
+    delete:
+      operationId: corporate_actions_shares_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - corporate-actions
+      security:
+      - oauth2:
+        - v2:integration:portfolio:sharescorporateaction:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/deposits/:
+    get:
+      operationId: deposits_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: completed_at_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: completed_at_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional deposit attributes for the specific portal
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - CANCELLED
+            - COMPLETED
+            - ERROR
+            - PENDING
+            - PROCESSING
+            - REQUESTED
+        explode: true
+        style: form
+      - in: query
+        name: transacted_at_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: transacted_at_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - deposits
+      security:
+      - oauth2:
+        - v2:integration:payment:deposit:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDepositList'
+          description: ''
+    post:
+      operationId: deposits_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - deposits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:payment:deposit:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deposit'
+          description: ''
+  /api/v2/integration/deposits/{uuid}/:
+    get:
+      operationId: deposits_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - deposits
+      security:
+      - oauth2:
+        - v2:integration:payment:deposit:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deposit'
+          description: ''
+    put:
+      operationId: deposits_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - deposits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Deposit'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:payment:deposit:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deposit'
+          description: ''
+    delete:
+      operationId: deposits_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - deposits
+      security:
+      - oauth2:
+        - v2:integration:payment:deposit:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/portfolios/:
+    get:
+      operationId: portfolios_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: client
+        schema:
+          type: integer
+      - in: query
+        name: external_custodian_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional Portfolio attributes
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ACTIVE
+            - DELETED
+            - DELETING
+            - PENDING
+        explode: true
+        style: form
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPortfolioListList'
+          description: ''
+    post:
+      operationId: portfolios_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationPortfolioCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntegrationPortfolioCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntegrationPortfolioCreate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationPortfolioCreate'
+          description: ''
+  /api/v2/integration/portfolios/{portfolio_uuid}/:
+    get:
+      operationId: portfolios_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioList'
+          description: ''
+    put:
+      operationId: portfolios_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioUpdate'
+          description: ''
+    patch:
+      operationId: portfolios_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioUpdate'
+          description: ''
+    delete:
+      operationId: portfolios_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:portfolio:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/portfolios/{portfolio_uuid}/allocations/:
+    get:
+      operationId: portfolios_allocations_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: valuation_date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: valuation_date_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:allocation:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPortfolioAllocationList'
+          description: ''
+    post:
+      operationId: portfolios_allocations_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - portfolios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:allocation:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioAllocation'
+          description: ''
+  /api/v2/integration/portfolios/{portfolio_uuid}/allocations/{valuation_date}/:
+    get:
+      operationId: portfolios_allocations_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: valuation_date
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:allocation:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioAllocation'
+          description: ''
+    put:
+      operationId: portfolios_allocations_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: valuation_date
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - portfolios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PortfolioAllocation'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:portfolio:allocation:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioAllocation'
+          description: ''
+    delete:
+      operationId: portfolios_allocations_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: valuation_date
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - portfolios
+      security:
+      - oauth2:
+        - v2:integration:portfolio:allocation:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/report/trade-reports/:
+    get:
+      operationId: report_trade_reports_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional report attributes
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - CANCELLED
+          - ERROR
+          - GENERATED
+          - GENERATING
+          - SENT
+      - in: query
+        name: trade_date_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: trade_date_before
+        schema:
+          type: string
+          format: date
+      tags:
+      - report
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTradeReportList'
+          description: ''
+    post:
+      operationId: report_trade_reports_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeReport'
+          description: ''
+  /api/v2/integration/report/trade-reports/{uuid}/:
+    get:
+      operationId: report_trade_reports_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - report
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeReport'
+          description: ''
+    put:
+      operationId: report_trade_reports_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TradeReport'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeReport'
+          description: ''
+    patch:
+      operationId: report_trade_reports_partial_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTradeReport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTradeReport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTradeReport'
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeReport'
+          description: ''
+    delete:
+      operationId: report_trade_reports_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - report
+      security:
+      - oauth2:
+        - v2:integration:report:trade-report:delete
+      responses:
+        '204':
+          description: No response body
+  /api/v2/integration/withdrawals/:
+    get:
+      operationId: withdrawals_list
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: query
+        name: completed_at_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: completed_at_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: external_id
+        schema:
+          type: string
+      - in: query
+        name: extra_data
+        schema:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        description: Additional withdrawal attributes for the specific portal
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: portfolio
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - CANCELLED
+            - COMPLETED
+            - DRAFT
+            - ERROR
+            - PENDING
+            - POSITIONS_SOLD
+            - PROCESSING
+            - REQUESTED
+        explode: true
+        style: form
+      tags:
+      - withdrawals
+      security:
+      - oauth2:
+        - v2:integration:payment:withdrawal:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIntegrationWithdrawalListList'
+          description: ''
+    post:
+      operationId: withdrawals_create
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      tags:
+      - withdrawals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:payment:withdrawal:create
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          description: ''
+  /api/v2/integration/withdrawals/{uuid}/:
+    get:
+      operationId: withdrawals_retrieve
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - withdrawals
+      security:
+      - oauth2:
+        - v2:integration:payment:withdrawal:read
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationWithdrawalList'
+          description: ''
+    put:
+      operationId: withdrawals_update
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - withdrawals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+        required: true
+      security:
+      - oauth2:
+        - v2:integration:payment:withdrawal:update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationWithdrawalCreate'
+          description: ''
+    delete:
+      operationId: withdrawals_destroy
+      description: |-
+        Mixin to help us access the data of a specific user/portfolio provided in the url params.
+        To use this mixin you should provide the lookup field as class property
+
+        Example:
+        class AddressViewSet(viewsets.ModelViewSet):
+            queryset = Address.objects.all()
+            investor_lookup_field = 'user__client__uuid'
+            portfolio_lookup_field = 'portfolio__uuid'
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - withdrawals
+      security:
+      - oauth2:
+        - v2:integration:payment:withdrawal:delete
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Allocation:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        valuation_date:
+          type: string
+          format: date
+        cash_active:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationPosition'
+        portfolio:
+          type: string
+          readOnly: true
+      required:
+      - cash_active
+      - portfolio
+      - positions
+      - valuation_date
+    AllocationPosition:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        currency:
+          type: string
+          readOnly: true
+        value:
+          type: number
+          format: double
+          readOnly: true
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: Conversion rate from asset currency to portfolio currency
+        asset_currency_value:
+          type: number
+          format: double
+          nullable: true
+          readOnly: true
+      required:
+      - asset
+      - asset_currency_value
+      - currency
+      - price
+      - shares
+      - value
+    AssetModelPortfolio:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        asset:
+          $ref: '#/components/schemas/RelatedAssetSerializerWithAssetCategories'
+        weight:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+      required:
+      - asset
+      - weight
+    CashCorporateAction:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        valuation_date:
+          type: string
+          format: date
+          description: Date when CA was added to Portfolio allocation
+        event:
+          $ref: '#/components/schemas/CashCorporateActionEventEnum'
+        external_id:
+          type: string
+          nullable: true
+          maxLength: 250
+        portfolio:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - amount
+      - asset
+      - currency
+      - event
+      - portfolio
+      - uuid
+      - valuation_date
+    CashCorporateActionEventEnum:
+      enum:
+      - CASH_DIVIDEND
+      - CAPITAL_GAINS_DISTRIBUTION
+      type: string
+    Charge:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        portfolio:
+          type: string
+        status:
+          $ref: '#/components/schemas/ChargeStatusEnum'
+        description:
+          type: string
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        external_id:
+          type: string
+          nullable: true
+          maxLength: 250
+        charged:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date when the charge has been charged
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Updated on
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - amount
+      - created
+      - description
+      - portfolio
+      - updated
+      - uuid
+    ChargeStatusEnum:
+      enum:
+      - PENDING
+      - REQUESTED
+      - CHARGED
+      - EXTERNAL_CHARGED
+      - DELETED
+      type: string
+    Client:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusB65Enum'
+        email_verified:
+          type: boolean
+        email_verify_last_request:
+          type: string
+          format: date-time
+          nullable: true
+        password_reset_last_date:
+          type: string
+          format: date-time
+          nullable: true
+        title:
+          allOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        middle_name:
+          type: string
+          nullable: true
+        birthdate:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          allOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          nullable: true
+        marital_status:
+          allOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+        phone_number_verified:
+          type: string
+          format: date-time
+          nullable: true
+        language:
+          type: string
+          maxLength: 5
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        email:
+          type: string
+          format: email
+        marketing_consent:
+          type: boolean
+        tos_consent:
+          type: boolean
+        data_consent:
+          type: boolean
+        onboarded_by:
+          type: string
+          nullable: true
+        external_custodian_id:
+          type: string
+          maxLength: 250
+      required:
+      - email
+      - language
+      - uuid
+    Deposit:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        portfolio:
+          type: string
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        provider:
+          type: string
+        reference:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/DepositStatusEnum'
+        reason:
+          type: string
+          description: Cancelled reason
+          maxLength: 250
+        completed_at:
+          type: string
+          format: date-time
+        deposit_type:
+          $ref: '#/components/schemas/DepositTypeEnum'
+        external_id:
+          type: string
+          description: External ids
+          maxLength: 250
+        transacted_at:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional deposit attributes for the specific portal
+      required:
+      - amount
+      - portfolio
+      - provider
+      - reference
+      - uuid
+    DepositStatusEnum:
+      enum:
+      - PENDING
+      - REQUESTED
+      - PROCESSING
+      - COMPLETED
+      - ERROR
+      - CANCELLED
+      type: string
+    DepositTypeEnum:
+      enum:
+      - CONTRIBUTION
+      - TRANSFER
+      type: string
+    DocTypeEnum:
+      enum:
+      - ID_PERSONAL
+      - BANK_DETAILS
+      - EMPLOYMENT
+      - MARITAL_STATUS
+      - PENSION
+      - LEGAL
+      - TRANSFERS
+      - MEDICAL
+      - CONTRACT
+      - OTHERS
+      type: string
+    DocumentCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 250
+        client:
+          type: string
+        doc_type:
+          $ref: '#/components/schemas/DocTypeEnum'
+        description:
+          type: string
+          maxLength: 250
+        path:
+          type: string
+          format: uri
+          readOnly: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional document attributes for the specific portal
+      required:
+      - client
+      - doc_type
+      - name
+      - path
+      - uuid
+    DocumentList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        client:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Updated on
+        name:
+          type: string
+          maxLength: 250
+        doc_type:
+          $ref: '#/components/schemas/DocTypeEnum'
+        description:
+          type: string
+          maxLength: 250
+        path:
+          type: string
+          format: uri
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional document attributes for the specific portal
+      required:
+      - client
+      - created
+      - doc_type
+      - name
+      - path
+      - updated
+      - uuid
+    DocumentUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+    DurationEnum:
+      enum:
+      - GOOD_TILL_CANCEL
+      - DAY_ORDER
+      type: string
+    GenderEnum:
+      enum:
+      - M
+      - F
+      - U
+      type: string
+    IntegrationAsset:
+      type: object
+      description: Allow get asset by multiple params or UUID
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        market:
+          type: string
+        isin:
+          type: string
+          maxLength: 120
+        currency:
+          type: string
+        ticker:
+          type: string
+          maxLength: 120
+        name:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - isin
+      - name
+      - ticker
+      - uuid
+    IntegrationClientUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusB65Enum'
+        email_verified:
+          type: boolean
+        email_verify_last_request:
+          type: string
+          format: date-time
+          nullable: true
+        password_reset_last_date:
+          type: string
+          format: date-time
+          nullable: true
+        title:
+          allOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        middle_name:
+          type: string
+          nullable: true
+        birthdate:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          allOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          nullable: true
+        marital_status:
+          allOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+        phone_number_verified:
+          type: string
+          format: date-time
+          nullable: true
+        language:
+          type: string
+          maxLength: 5
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        email:
+          type: string
+          format: email
+        marketing_consent:
+          type: boolean
+        tos_consent:
+          type: boolean
+        data_consent:
+          type: boolean
+        onboarded_by:
+          type: string
+          nullable: true
+        external_custodian_id:
+          type: string
+          maxLength: 250
+      required:
+      - email
+      - language
+      - uuid
+    IntegrationPortfolioCreate:
+      type: object
+      properties:
+        client:
+          type: string
+        name:
+          type: string
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/Status2efEnum'
+        portfolio_type:
+          type: string
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional Portfolio attributes
+        external_custodian_id:
+          type: string
+          maxLength: 250
+        currency:
+          type: string
+      required:
+      - client
+      - currency
+      - name
+      - portfolio_type
+    IntegrationWithdrawalCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        portfolio:
+          type: string
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        provider:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status14bEnum'
+        reason:
+          type: string
+          description: Cancelled reason
+          maxLength: 250
+        completed_at:
+          type: string
+          format: date-time
+        purpose:
+          type: string
+          nullable: true
+          description: Withdrawal reason
+          maxLength: 250
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        withdrawal_type:
+          type: string
+          readOnly: true
+        external_id:
+          type: string
+          description: External ids
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional withdrawal attributes for the specific portal
+      required:
+      - amount
+      - created
+      - portfolio
+      - provider
+      - status
+      - uuid
+      - withdrawal_type
+    IntegrationWithdrawalList:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        portfolio:
+          type: string
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        provider:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status14bEnum'
+        reason:
+          type: string
+          description: Cancelled reason
+          maxLength: 250
+        completed_at:
+          type: string
+          format: date-time
+        purpose:
+          type: string
+          nullable: true
+          description: Withdrawal reason
+          maxLength: 250
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        withdrawal_type:
+          type: string
+        external_id:
+          type: string
+          description: External ids
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional withdrawal attributes for the specific portal
+      required:
+      - amount
+      - created
+      - portfolio
+      - provider
+      - status
+      - uuid
+    MaritalStatusEnum:
+      enum:
+      - NOT_DISCLOSED
+      - SINGLE
+      - MARRIED_CIVIL_PARTNER
+      - CIVIL_PARTNER
+      - DIVORCED_DISSOLVED_CIVIL_PARTNERSHIP
+      - WIDOWED_SURVIVING_CIVIL_PARTNER
+      - SEPARATED
+      type: string
+    Market:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        code:
+          type: string
+          maxLength: 10
+        name:
+          type: string
+          maxLength: 150
+        is_open:
+          type: boolean
+          readOnly: true
+        today_session_starts:
+          type: string
+          format: date-time
+        today_session_ends:
+          type: string
+          format: date-time
+        market_reopens:
+          type: string
+          format: date-time
+        special_days:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - is_open
+      - market_reopens
+      - name
+      - special_days
+      - today_session_ends
+      - today_session_starts
+    MarketSpecialDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        day:
+          type: string
+          format: date
+        description:
+          type: string
+          maxLength: 250
+        session_start:
+          type: string
+          format: time
+          nullable: true
+          title: Session start (market time zone)
+          description: When to start trading (market time zone)
+        session_end:
+          type: string
+          format: time
+          nullable: true
+          title: Session end (market time zone)
+          description: When to finish trading (market time zone)
+      required:
+      - date
+      - day
+    Method52fEnum:
+      enum:
+      - MARKET
+      - QUOTE
+      - LIMIT
+      - STOP
+      type: string
+    MethodFcfEnum:
+      enum:
+      - MARKET
+      - QUOTE
+      - INTERNAL
+      - LIMIT
+      - STOP
+      type: string
+    ModelPortfolio:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        cash_weight:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+          description: Percentage on the interval 0-1.
+        risk_level:
+          type: integer
+          maximum: 32767
+          nullable: true
+          minimum: 0
+        allocation:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetModelPortfolio'
+        created_for:
+          type: string
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional ModelPortfolio attributes
+      required:
+      - cash_weight
+      - name
+      - uuid
+    Order:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        trade:
+          type: string
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/MethodFcfEnum'
+        status:
+          $ref: '#/components/schemas/Status05cEnum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        rebalance:
+          type: integer
+          nullable: true
+        portfolio:
+          type: string
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        withdrawal:
+          type: string
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - asset
+      - created
+      - currency
+      - order_type
+      - portfolio
+      - uuid
+    OrderTypeEnum:
+      enum:
+      - BUY
+      - SELL
+      - VERIFICATION
+      type: string
+    PaginatedAllocationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Allocation'
+    PaginatedCashCorporateActionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashCorporateAction'
+    PaginatedChargeList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Charge'
+    PaginatedClientList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+    PaginatedDepositList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deposit'
+    PaginatedDocumentListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentList'
+    PaginatedIntegrationWithdrawalListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntegrationWithdrawalList'
+    PaginatedMarketList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Market'
+    PaginatedModelPortfolioList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelPortfolio'
+    PaginatedOrderList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    PaginatedPortfolioAllocationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioAllocation'
+    PaginatedPortfolioListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioList'
+    PaginatedPriceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+    PaginatedSharesCorporateActionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharesCorporateAction'
+    PaginatedTradeList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trade'
+    PaginatedTradeReportList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradeReport'
+    PatchedDocumentUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+    PatchedIntegrationClientUpdate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusB65Enum'
+        email_verified:
+          type: boolean
+        email_verify_last_request:
+          type: string
+          format: date-time
+          nullable: true
+        password_reset_last_date:
+          type: string
+          format: date-time
+          nullable: true
+        title:
+          allOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        middle_name:
+          type: string
+          nullable: true
+        birthdate:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          allOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          nullable: true
+        marital_status:
+          allOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+        phone_number_verified:
+          type: string
+          format: date-time
+          nullable: true
+        language:
+          type: string
+          maxLength: 5
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        email:
+          type: string
+          format: email
+        marketing_consent:
+          type: boolean
+        tos_consent:
+          type: boolean
+        data_consent:
+          type: boolean
+        onboarded_by:
+          type: string
+          nullable: true
+        external_custodian_id:
+          type: string
+          maxLength: 250
+    PatchedModelPortfolio:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        cash_weight:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+          description: Percentage on the interval 0-1.
+        risk_level:
+          type: integer
+          maximum: 32767
+          nullable: true
+          minimum: 0
+        allocation:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetModelPortfolio'
+        created_for:
+          type: string
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional ModelPortfolio attributes
+    PatchedPortfolioUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/Status2efEnum'
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional Portfolio attributes
+        external_custodian_id:
+          type: string
+          maxLength: 250
+    PatchedPrice:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        datetime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        open:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        high:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        low:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        previous_close:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+    PatchedTradeReport:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        trade_date:
+          type: string
+          format: date
+        file:
+          type: string
+          format: uri
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional report attributes
+        status:
+          $ref: '#/components/schemas/TradeReportStatusEnum'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Updated on
+    PatchedUpdateOrder:
+      type: object
+      properties:
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/IntegrationAsset'
+          nullable: true
+        trade:
+          type: string
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/MethodFcfEnum'
+        status:
+          $ref: '#/components/schemas/Status05cEnum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        rebalance:
+          type: integer
+          nullable: true
+        portfolio:
+          type: string
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        withdrawal:
+          type: string
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+    PatchedUpdateTrade:
+      type: object
+      description: Adds nested create feature
+      properties:
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/IntegrationAsset'
+          nullable: true
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/Method52fEnum'
+        status:
+          $ref: '#/components/schemas/StatusA84Enum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        settled_at:
+          type: string
+          format: date-time
+          nullable: true
+        external_id:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+    PortfolioAllocation:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        valuation_date:
+          type: string
+          format: date
+        cash_active:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationPosition'
+      required:
+      - cash_active
+      - positions
+      - valuation_date
+    PortfolioList:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Updated on
+        client:
+          type: string
+        name:
+          type: string
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/Status2efEnum'
+        portfolio_type:
+          type: string
+          readOnly: true
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional Portfolio attributes
+        external_custodian_id:
+          type: string
+          maxLength: 250
+        broker:
+          type: string
+          readOnly: true
+        custodian:
+          type: string
+          readOnly: true
+        advisor:
+          type: string
+          readOnly: true
+        risk_level:
+          type: integer
+          maximum: 32767
+          nullable: true
+          minimum: 0
+        currency:
+          type: string
+          readOnly: true
+      required:
+      - advisor
+      - broker
+      - client
+      - created
+      - currency
+      - custodian
+      - name
+      - portfolio_type
+      - updated
+      - uuid
+    PortfolioUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 150
+        status:
+          $ref: '#/components/schemas/Status2efEnum'
+        activated:
+          type: string
+          format: date-time
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional Portfolio attributes
+        external_custodian_id:
+          type: string
+          maxLength: 250
+      required:
+      - name
+    Price:
+      type: object
+      properties:
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        datetime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        open:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        high:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        low:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        previous_close:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - amount
+      - asset
+      - datetime
+      - uuid
+    RelatedAssetSerializerWithAssetCategories:
+      type: object
+      description: Allow get asset by multiple params or UUID
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        market:
+          type: string
+        isin:
+          type: string
+          maxLength: 120
+        currency:
+          type: string
+        ticker:
+          type: string
+          maxLength: 120
+        name:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        categories:
+          type: array
+          items:
+            type: string
+          readOnly: true
+      required:
+      - categories
+      - isin
+      - name
+      - ticker
+      - uuid
+    SharesCorporateAction:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields", "omit" and "expand" in order to
+        control which fields are displayed, and whether to replace simple
+        values with complex, nested serializations
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+        valuation_date:
+          type: string
+          format: date
+          description: Date when CA was added to Portfolio allocation
+        event:
+          $ref: '#/components/schemas/SharesCorporateActionEventEnum'
+        external_id:
+          type: string
+          nullable: true
+          maxLength: 250
+        portfolio:
+          type: string
+        price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: Asset price after the corporate action has been executed
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - asset
+      - event
+      - portfolio
+      - shares
+      - uuid
+      - valuation_date
+    SharesCorporateActionEventEnum:
+      enum:
+      - STOCK_DIVIDEND
+      - SPLIT
+      - REVERSE_SPLIT
+      - SPIN_OFF
+      type: string
+    Status05cEnum:
+      enum:
+      - PENDING
+      - WAITING_FOR_PRICE
+      - PROCESSING
+      - QUOTED
+      - COMPLETED
+      - VERIFIED
+      - ERROR
+      - CANCELLED
+      type: string
+    Status14bEnum:
+      enum:
+      - DRAFT
+      - PENDING
+      - PROCESSING
+      - POSITIONS_SOLD
+      - REQUESTED
+      - COMPLETED
+      - ERROR
+      - CANCELLED
+      type: string
+    Status2efEnum:
+      enum:
+      - PENDING
+      - ACTIVE
+      - DELETING
+      - DELETED
+      type: string
+    StatusA84Enum:
+      enum:
+      - DRAFT
+      - PENDING
+      - WAITING_FOR_PRICE
+      - PROCESSING
+      - PLACED
+      - QUOTED
+      - COMPLETED
+      - VERIFIED
+      - ERROR
+      - CANCELLED
+      type: string
+    StatusB65Enum:
+      enum:
+      - ONBOARDING
+      - PENDING
+      - ACTIVE
+      - INACTIVE
+      - CUSTODIAN_PENDING
+      - KYC_PENDING
+      type: string
+    TitleEnum:
+      enum:
+      - MR
+      - MS
+      - MX
+      type: string
+    Trade:
+      type: object
+      description: Adds nested create feature
+      properties:
+        asset:
+          $ref: '#/components/schemas/IntegrationAsset'
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/Method52fEnum'
+        status:
+          $ref: '#/components/schemas/StatusA84Enum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        settled_at:
+          type: string
+          format: date-time
+          nullable: true
+        external_id:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - asset
+      - created
+      - currency
+      - order_type
+      - shares
+      - uuid
+    TradeFillByAmount:
+      type: object
+      properties:
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        external_id:
+          type: string
+          maxLength: 250
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+    TradeReport:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        trade_date:
+          type: string
+          format: date
+        file:
+          type: string
+          format: uri
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Additional report attributes
+        status:
+          $ref: '#/components/schemas/TradeReportStatusEnum'
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Updated on
+      required:
+      - created
+      - trade_date
+      - updated
+      - uuid
+    TradeReportStatusEnum:
+      enum:
+      - GENERATING
+      - ERROR
+      - GENERATED
+      - SENT
+      - CANCELLED
+      type: string
+    UpdateOrder:
+      type: object
+      properties:
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/IntegrationAsset'
+          nullable: true
+        trade:
+          type: string
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/MethodFcfEnum'
+        status:
+          $ref: '#/components/schemas/Status05cEnum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        rebalance:
+          type: integer
+          nullable: true
+        portfolio:
+          type: string
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        withdrawal:
+          type: string
+          nullable: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - created
+      - currency
+      - order_type
+      - portfolio
+      - uuid
+    UpdateTrade:
+      type: object
+      description: Adds nested create feature
+      properties:
+        asset:
+          allOf:
+          - $ref: '#/components/schemas/IntegrationAsset'
+          nullable: true
+        order_type:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        method:
+          $ref: '#/components/schemas/Method52fEnum'
+        status:
+          $ref: '#/components/schemas/StatusA84Enum'
+        reason:
+          type: string
+        completed:
+          type: string
+          format: date-time
+          nullable: true
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        shares:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        amount:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        price_avg:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0
+        currency:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Created on
+        fx_rate_account:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: -1000000000000
+          nullable: true
+          description: FX rate from instrument currency to account currency
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        limit_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        stop_price:
+          type: number
+          format: double
+          maximum: 1000000000000
+          minimum: 0.01
+          nullable: true
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          nullable: true
+        settled_at:
+          type: string
+          format: date-time
+          nullable: true
+        external_id:
+          type: string
+          maxLength: 250
+        extra_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - created
+      - currency
+      - order_type
+      - shares
+      - uuid
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows: {}
