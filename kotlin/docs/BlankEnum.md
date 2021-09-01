@@ -1,0 +1,10 @@
+
+# BlankEnum
+
+## Enum
+
+
+    * `eMPTY` (value: `""`)
+
+
+
