@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Nucoro API v2
-  version: 1.0.0
+  title: Nucoro API
+  version: 4.175.0
   description: No description
 paths:
   /api/schema/:
@@ -1241,102 +1241,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientCreate'
           description: ''
-  /api/v2/clients/{client_uuid}/:
-    get:
-      operationId: Client Retrieve
-      description: Retrieve a client
-      parameters:
-      - in: path
-        name: client_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Application
-      - Client
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientDetail'
-          description: ''
-    put:
-      operationId: Client Update
-      description: Update a client
-      parameters:
-      - in: path
-        name: client_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Application
-      - Client
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ApplicationClientUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ApplicationClientUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ApplicationClientUpdate'
-        required: true
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationClientUpdate'
-          description: ''
-    patch:
-      operationId: Client Partial Update
-      description: Partial Update a client
-      parameters:
-      - in: path
-        name: client_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Application
-      - Client
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApplicationClientUpdate'
-          description: ''
   /api/v2/clients/{client_uuid}/activities/:
     get:
       operationId: api_v2_clients_activities_list
@@ -1378,7 +1282,7 @@ paths:
         explode: true
         style: form
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -1408,7 +1312,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -1495,19 +1399,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/AddressCreate'
           description: ''
-  /api/v2/clients/{client_uuid}/addresses/{address_uuid}/:
+  /api/v2/clients/{client_uuid}/addresses/{uuid}/:
     get:
       operationId: Client Address Retrieve
       description: Retrieve a client address
       parameters:
       - in: path
-        name: address_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1532,13 +1436,13 @@ paths:
       description: Update a client address
       parameters:
       - in: path
-        name: address_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1575,13 +1479,13 @@ paths:
       description: Partial Update a client address
       parameters:
       - in: path
-        name: address_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1617,13 +1521,13 @@ paths:
       description: Delete a client address
       parameters:
       - in: path
-        name: address_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1650,14 +1554,8 @@ paths:
           type: string
           format: uuid
         required: true
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -1683,7 +1581,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -1765,19 +1663,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/BankAccountCreateUpdate'
           description: ''
-  /api/v2/clients/{client_uuid}/bank-accounts/{bank_account_uuid}/:
+  /api/v2/clients/{client_uuid}/bank-accounts/{uuid}/:
     get:
       operationId: Client Bank Account Retrieve
       description: Retrieve a client bank account
       parameters:
       - in: path
-        name: bank_account_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1802,13 +1700,13 @@ paths:
       description: Update a client bank account
       parameters:
       - in: path
-        name: bank_account_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1844,13 +1742,13 @@ paths:
       description: Partial Update a client bank account
       parameters:
       - in: path
-        name: bank_account_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1886,13 +1784,13 @@ paths:
       description: Delete a client bank account
       parameters:
       - in: path
-        name: bank_account_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -1919,12 +1817,6 @@ paths:
           type: string
           format: uuid
         required: true
-      - in: path
-        name: investor_fee_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
       - name: limit
         required: false
         in: query
@@ -1938,7 +1830,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -1960,14 +1852,8 @@ paths:
           type: string
           format: uuid
         required: true
-      - in: path
-        name: investor_fee_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
       tags:
-      - api
+      - Application
       requestBody:
         content:
           application/json:
@@ -1991,7 +1877,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InvestorFee'
           description: ''
-  /api/v2/clients/{client_uuid}/billing/fees/{investor_fee_uuid}/:
+  /api/v2/clients/{client_uuid}/billing/fees/{uuid}/:
     get:
       operationId: api_v2_clients_billing_fees_retrieve
       description: ''
@@ -2003,13 +1889,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: investor_fee_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2032,13 +1918,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: investor_fee_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       requestBody:
         content:
           application/json:
@@ -2073,13 +1959,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: investor_fee_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       requestBody:
         content:
           application/json:
@@ -2113,13 +1999,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: investor_fee_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2161,7 +2047,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2207,7 +2093,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2227,8 +2113,8 @@ paths:
           description: ''
   /api/v2/clients/{client_uuid}/documents/:
     get:
-      operationId: api_v2_clients_documents_list
-      description: ''
+      operationId: Client Document List
+      description: List Document for a client
       parameters:
       - in: query
         name: client
@@ -2287,7 +2173,9 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
+      - Client
+      - Document
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2300,12 +2188,8 @@ paths:
                 $ref: '#/components/schemas/PaginatedDocumentList'
           description: ''
     post:
-      operationId: api_v2_clients_documents_create
-      description: |-
-        Uploads a document for a certain user.
-
-        This call expects the files and parameters being sent as form/multipart
-        encoding.
+      operationId: Client Document Create
+      description: Create a document for a client
       parameters:
       - in: path
         name: client_uuid
@@ -2314,7 +2198,9 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
+      - Client
+      - Document
       requestBody:
         content:
           multipart/form-data:
@@ -2334,8 +2220,8 @@ paths:
           description: ''
   /api/v2/clients/{client_uuid}/documents/{uuid}/:
     get:
-      operationId: api_v2_clients_documents_retrieve
-      description: ''
+      operationId: Client Document Retrieve
+      description: Retrieve a client document
       parameters:
       - in: path
         name: client_uuid
@@ -2350,7 +2236,9 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
+      - Client
+      - Document
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2363,8 +2251,8 @@ paths:
                 $ref: '#/components/schemas/Document'
           description: ''
     delete:
-      operationId: api_v2_clients_documents_destroy
-      description: ''
+      operationId: Client Document Delete
+      description: Delete a client document
       parameters:
       - in: path
         name: client_uuid
@@ -2379,7 +2267,9 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
+      - Client
+      - Document
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2462,7 +2352,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/NationalityCreate'
           description: ''
-  /api/v2/clients/{client_uuid}/nationalities/{nationality_uuid}/:
+  /api/v2/clients/{client_uuid}/nationalities/{uuid}/:
     get:
       operationId: Client Nationlity Retrieve
       description: Retrieve a client nationality
@@ -2474,7 +2364,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: nationality_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -2505,7 +2395,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: nationality_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -2548,7 +2438,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: nationality_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -2590,7 +2480,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: nationality_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -2606,68 +2496,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v2/clients/{client_uuid}/onboarding/complete/:
-    post:
-      operationId: Client Complete onboarding
-      description: Complete onboarding for a client
-      parameters:
-      - in: path
-        name: client_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Application
-      - Client
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientDetail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ClientDetail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ClientDetail'
-        required: true
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientDetail'
-          description: ''
-  /api/v2/clients/{client_uuid}/performance/twrr/:
-    get:
-      operationId: Client TWRR Performance
-      description: Calculate TWRR Performance for client
-      parameters:
-      - in: path
-        name: client_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Application
-      - Client
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientPerformance'
-          description: ''
   /api/v2/clients/{client_uuid}/report/statements/:
     get:
       operationId: api_v2_clients_report_statements_list
@@ -2702,7 +2530,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2748,7 +2576,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2800,7 +2628,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2846,7 +2674,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -2951,19 +2779,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/Assessment'
           description: ''
-  /api/v2/clients/{client_uuid}/risk-assessments/{assessment_uuid}/:
+  /api/v2/clients/{client_uuid}/risk-assessments/{uuid}/:
     get:
       operationId: Client Risk Assessment Retrieve
       description: Retrieve a client risk assessment
       parameters:
       - in: path
-        name: assessment_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -2988,13 +2816,13 @@ paths:
       description: Partial Update a client risk assessment
       parameters:
       - in: path
-        name: assessment_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3030,13 +2858,13 @@ paths:
       description: Delete a client risk assessment
       parameters:
       - in: path
-        name: assessment_uuid
+        name: client_uuid
         schema:
           type: string
           format: uuid
         required: true
       - in: path
-        name: client_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3127,7 +2955,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TaxInformationCreateUpdate'
           description: ''
-  /api/v2/clients/{client_uuid}/tax-informations/{tax_information_uuid}/:
+  /api/v2/clients/{client_uuid}/tax-informations/{uuid}/:
     get:
       operationId: Client Tax Information Retrieve
       description: Retrieve a client tax inforation
@@ -3139,7 +2967,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: tax_information_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3170,7 +2998,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: tax_information_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3213,7 +3041,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: tax_information_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3255,7 +3083,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: tax_information_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3356,7 +3184,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VerificationCreate'
           description: ''
-  /api/v2/clients/{client_uuid}/verifications/{verify_type_code}/{verification_uuid}/:
+  /api/v2/clients/{client_uuid}/verifications/{verify_type_code}/{uuid}/:
     get:
       operationId: Client Verification Retrieve
       description: 'Retrieve a client verification '
@@ -3368,7 +3196,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: verification_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3475,7 +3303,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VerificationWithType'
           description: ''
-  /api/v2/clients/{client_uuid}/verifications/{verify_type_code}/documents/{verification_document_uuid}/:
+  /api/v2/clients/{client_uuid}/verifications/{verify_type_code}/documents/{uuid}/:
     get:
       operationId: Client Verification Document Retrieve
       description: Retrieve a client verification document
@@ -3487,7 +3315,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: verification_document_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3523,7 +3351,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: verification_document_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3568,7 +3396,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: verification_document_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3612,7 +3440,7 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: verification_document_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -3679,14 +3507,8 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
-      - in: path
-        name: watchlist_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -3731,14 +3553,8 @@ paths:
           type: string
           format: uuid
         required: true
-      - in: path
-        name: watchlist_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
       tags:
-      - api
+      - Application
       requestBody:
         content:
           application/json:
@@ -3762,7 +3578,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Watchlist'
           description: ''
-  /api/v2/clients/{client_uuid}/watchlists/{watchlist_uuid}/:
+  /api/v2/clients/{client_uuid}/watchlists/{uuid}/:
     get:
       operationId: api_v2_clients_watchlists_retrieve
       description: |-
@@ -3797,13 +3613,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: watchlist_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -3849,13 +3665,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: watchlist_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       requestBody:
         content:
           application/json:
@@ -3913,13 +3729,13 @@ paths:
           format: uuid
         required: true
       - in: path
-        name: watchlist_uuid
+        name: uuid
         schema:
           type: string
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -3927,6 +3743,176 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v2/clients/{uuid}/:
+    get:
+      operationId: Client Retrieve
+      description: Retrieve a client
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - Client
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetail'
+          description: ''
+    put:
+      operationId: Client Update
+      description: Update a client
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - Client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApplicationClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApplicationClientUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationClientUpdate'
+          description: ''
+    patch:
+      operationId: Client Partial Update
+      description: Partial Update a client
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - Client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedApplicationClientUpdate'
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationClientUpdate'
+          description: ''
+  /api/v2/clients/{uuid}/onboarding/complete/:
+    post:
+      operationId: Client Complete onboarding
+      description: Complete onboarding for a client
+      parameters:
+      - in: path
+        name: client_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - Client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientDetail'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetail'
+          description: ''
+  /api/v2/clients/{uuid}/performance/twrr/:
+    get:
+      operationId: Client TWRR Performance
+      description: Calculate TWRR Performance for client
+      parameters:
+      - in: path
+        name: client_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - Client
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientPerformance'
+          description: ''
   /api/v2/clients/{uuid}/verify/email/:
     put:
       operationId: api_v2_clients_verify_email_update
@@ -4242,13 +4228,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/Goal'
           description: ''
-  /api/v2/goals/{goal_uuid}/:
+  /api/v2/goals/{uuid}/:
     get:
       operationId: api_v2_goals_retrieve
       description: ''
       parameters:
       - in: path
         name: goal_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -4272,6 +4264,12 @@ paths:
       parameters:
       - in: path
         name: goal_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -4306,6 +4304,12 @@ paths:
       parameters:
       - in: path
         name: goal_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
         schema:
           type: string
           format: uuid
@@ -4441,7 +4445,7 @@ paths:
           description: ''
   /api/v2/inbox/conversations/{conversation}/:
     get:
-      operationId: api_v2_inbox_conversations_list_2
+      operationId: api_v2_inbox_conversation_detail_messages_list
       description: List all messages from a conversation uuid
       parameters:
       - in: path
@@ -4890,210 +4894,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PortfolioCreate'
           description: ''
-  /api/v2/portfolios/{portfolio_uuid}/:
-    get:
-      operationId: api_v2_portfolios_retrieve
-      description: |-
-        Allow aggregate/group fields of the ModelView model or its related entities.
-           Query params should use dot notation.
-
-        Requires:
-            ListModelMixin (ListAPIView, ListCreateApiView)
-
-        Args:
-            * aggregatable_fields (dict): optional.
-                Keys: fields that allow aggregation (including related entities with "__" notation).
-                Values: django qs functions or aggregate_fns
-                Example:
-                    aggregatable_fields = {
-                        'allocations__balance': [Sum, Avg],
-                    }
-
-            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
-                Example:
-                    groupable_fields = ['portfolio__portfolio_type']
-
-        Query Param Examples:
-            >>> ?group_by=portfolio.portfolio_type
-            >>> ?aggregate[Sum]=portfolio.allocations.balance
-            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
-      parameters:
-      - in: path
-        name: portfolio_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PortfolioDetail'
-          description: ''
-    put:
-      operationId: api_v2_portfolios_update
-      description: |-
-        Allow aggregate/group fields of the ModelView model or its related entities.
-           Query params should use dot notation.
-
-        Requires:
-            ListModelMixin (ListAPIView, ListCreateApiView)
-
-        Args:
-            * aggregatable_fields (dict): optional.
-                Keys: fields that allow aggregation (including related entities with "__" notation).
-                Values: django qs functions or aggregate_fns
-                Example:
-                    aggregatable_fields = {
-                        'allocations__balance': [Sum, Avg],
-                    }
-
-            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
-                Example:
-                    groupable_fields = ['portfolio__portfolio_type']
-
-        Query Param Examples:
-            >>> ?group_by=portfolio.portfolio_type
-            >>> ?aggregate[Sum]=portfolio.allocations.balance
-            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
-      parameters:
-      - in: path
-        name: portfolio_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PortfolioUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PortfolioUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PortfolioUpdate'
-        required: true
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PortfolioUpdate'
-          description: ''
-    patch:
-      operationId: api_v2_portfolios_partial_update
-      description: |-
-        Allow aggregate/group fields of the ModelView model or its related entities.
-           Query params should use dot notation.
-
-        Requires:
-            ListModelMixin (ListAPIView, ListCreateApiView)
-
-        Args:
-            * aggregatable_fields (dict): optional.
-                Keys: fields that allow aggregation (including related entities with "__" notation).
-                Values: django qs functions or aggregate_fns
-                Example:
-                    aggregatable_fields = {
-                        'allocations__balance': [Sum, Avg],
-                    }
-
-            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
-                Example:
-                    groupable_fields = ['portfolio__portfolio_type']
-
-        Query Param Examples:
-            >>> ?group_by=portfolio.portfolio_type
-            >>> ?aggregate[Sum]=portfolio.allocations.balance
-            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
-      parameters:
-      - in: path
-        name: portfolio_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedPortfolioUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedPortfolioUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedPortfolioUpdate'
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PortfolioUpdate'
-          description: ''
-    delete:
-      operationId: api_v2_portfolios_destroy
-      description: |-
-        Allow aggregate/group fields of the ModelView model or its related entities.
-           Query params should use dot notation.
-
-        Requires:
-            ListModelMixin (ListAPIView, ListCreateApiView)
-
-        Args:
-            * aggregatable_fields (dict): optional.
-                Keys: fields that allow aggregation (including related entities with "__" notation).
-                Values: django qs functions or aggregate_fns
-                Example:
-                    aggregatable_fields = {
-                        'allocations__balance': [Sum, Avg],
-                    }
-
-            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
-                Example:
-                    groupable_fields = ['portfolio__portfolio_type']
-
-        Query Param Examples:
-            >>> ?group_by=portfolio.portfolio_type
-            >>> ?aggregate[Sum]=portfolio.allocations.balance
-            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
-      parameters:
-      - in: path
-        name: portfolio_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '204':
-          description: No response body
   /api/v2/portfolios/{portfolio_uuid}/activities/:
     get:
       operationId: api_v2_portfolios_activities_list
@@ -5848,53 +5648,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Rebalance'
           description: ''
-  /api/v2/portfolios/{portfolio_uuid}/restrictions/:
-    get:
-      operationId: api_v2_portfolios_restrictions_retrieve
-      description: |-
-        Allow aggregate/group fields of the ModelView model or its related entities.
-           Query params should use dot notation.
-
-        Requires:
-            ListModelMixin (ListAPIView, ListCreateApiView)
-
-        Args:
-            * aggregatable_fields (dict): optional.
-                Keys: fields that allow aggregation (including related entities with "__" notation).
-                Values: django qs functions or aggregate_fns
-                Example:
-                    aggregatable_fields = {
-                        'allocations__balance': [Sum, Avg],
-                    }
-
-            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
-                Example:
-                    groupable_fields = ['portfolio__portfolio_type']
-
-        Query Param Examples:
-            >>> ?group_by=portfolio.portfolio_type
-            >>> ?aggregate[Sum]=portfolio.allocations.balance
-            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
-      parameters:
-      - in: path
-        name: portfolio_uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PortfolioTypeRestrictions'
-          description: ''
   /api/v2/portfolios/{portfolio_uuid}/withdrawals/:
     get:
       operationId: api_v2_portfolios_withdrawals_list
@@ -6075,6 +5828,287 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v2/portfolios/{uuid}/:
+    get:
+      operationId: api_v2_portfolios_retrieve
+      description: |-
+        Allow aggregate/group fields of the ModelView model or its related entities.
+           Query params should use dot notation.
+
+        Requires:
+            ListModelMixin (ListAPIView, ListCreateApiView)
+
+        Args:
+            * aggregatable_fields (dict): optional.
+                Keys: fields that allow aggregation (including related entities with "__" notation).
+                Values: django qs functions or aggregate_fns
+                Example:
+                    aggregatable_fields = {
+                        'allocations__balance': [Sum, Avg],
+                    }
+
+            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
+                Example:
+                    groupable_fields = ['portfolio__portfolio_type']
+
+        Query Param Examples:
+            >>> ?group_by=portfolio.portfolio_type
+            >>> ?aggregate[Sum]=portfolio.allocations.balance
+            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioDetail'
+          description: ''
+    put:
+      operationId: api_v2_portfolios_update
+      description: |-
+        Allow aggregate/group fields of the ModelView model or its related entities.
+           Query params should use dot notation.
+
+        Requires:
+            ListModelMixin (ListAPIView, ListCreateApiView)
+
+        Args:
+            * aggregatable_fields (dict): optional.
+                Keys: fields that allow aggregation (including related entities with "__" notation).
+                Values: django qs functions or aggregate_fns
+                Example:
+                    aggregatable_fields = {
+                        'allocations__balance': [Sum, Avg],
+                    }
+
+            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
+                Example:
+                    groupable_fields = ['portfolio__portfolio_type']
+
+        Query Param Examples:
+            >>> ?group_by=portfolio.portfolio_type
+            >>> ?aggregate[Sum]=portfolio.allocations.balance
+            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioUpdate'
+          description: ''
+    patch:
+      operationId: api_v2_portfolios_partial_update
+      description: |-
+        Allow aggregate/group fields of the ModelView model or its related entities.
+           Query params should use dot notation.
+
+        Requires:
+            ListModelMixin (ListAPIView, ListCreateApiView)
+
+        Args:
+            * aggregatable_fields (dict): optional.
+                Keys: fields that allow aggregation (including related entities with "__" notation).
+                Values: django qs functions or aggregate_fns
+                Example:
+                    aggregatable_fields = {
+                        'allocations__balance': [Sum, Avg],
+                    }
+
+            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
+                Example:
+                    groupable_fields = ['portfolio__portfolio_type']
+
+        Query Param Examples:
+            >>> ?group_by=portfolio.portfolio_type
+            >>> ?aggregate[Sum]=portfolio.allocations.balance
+            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPortfolioUpdate'
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioUpdate'
+          description: ''
+    delete:
+      operationId: api_v2_portfolios_destroy
+      description: |-
+        Allow aggregate/group fields of the ModelView model or its related entities.
+           Query params should use dot notation.
+
+        Requires:
+            ListModelMixin (ListAPIView, ListCreateApiView)
+
+        Args:
+            * aggregatable_fields (dict): optional.
+                Keys: fields that allow aggregation (including related entities with "__" notation).
+                Values: django qs functions or aggregate_fns
+                Example:
+                    aggregatable_fields = {
+                        'allocations__balance': [Sum, Avg],
+                    }
+
+            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
+                Example:
+                    groupable_fields = ['portfolio__portfolio_type']
+
+        Query Param Examples:
+            >>> ?group_by=portfolio.portfolio_type
+            >>> ?aggregate[Sum]=portfolio.allocations.balance
+            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v2/portfolios/{uuid}/restrictions/:
+    get:
+      operationId: api_v2_portfolios_restrictions_retrieve
+      description: |-
+        Allow aggregate/group fields of the ModelView model or its related entities.
+           Query params should use dot notation.
+
+        Requires:
+            ListModelMixin (ListAPIView, ListCreateApiView)
+
+        Args:
+            * aggregatable_fields (dict): optional.
+                Keys: fields that allow aggregation (including related entities with "__" notation).
+                Values: django qs functions or aggregate_fns
+                Example:
+                    aggregatable_fields = {
+                        'allocations__balance': [Sum, Avg],
+                    }
+
+            * groupable_fields (list): optional. fields that allow grouping (including related entities with "__" notation).
+                Example:
+                    groupable_fields = ['portfolio__portfolio_type']
+
+        Query Param Examples:
+            >>> ?group_by=portfolio.portfolio_type
+            >>> ?aggregate[Sum]=portfolio.allocations.balance
+            >>> ?group_by=valuation_date&aggregate[Sum]=portfolio.allocations.balance
+      parameters:
+      - in: path
+        name: portfolio_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioTypeRestrictions'
+          description: ''
   /api/v2/portfolios/portfoliotypes/:
     get:
       operationId: api_v2_portfolios_portfoliotypes_list
@@ -6140,6 +6174,292 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedBasePortfolioTypeRestrictionsList'
           description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/allocations-by-asset/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_allocations_by_asset_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllocationByAsset'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/asset-concentration-risk/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_asset_concentration_risk_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetConcentrationRisk'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/aum/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_aum_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/aum-evolution/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_aum_evolution_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AUMEvoluation'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/aum-portfolio-risk/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_aum_portfolio_risk_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AUMPortfolioRisk'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/client-by-risk/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_client_by_risk_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/client-by-status/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_client_by_status_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/client-ranking/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_client_ranking_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientRanking'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/inflows-outflows/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_inflows_outflows_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/portfolio-risk-performance/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_portfolio_risk_performance_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
+  /api/v2/relationship-manager/{relationship_manager_uuid}/analytics/total-active-clients/:
+    get:
+      operationId: api_v2_relationship_manager_analytics_total_active_clients_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: relationship_manager_uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Application
+      - RelationShipManager
+      - Analytics
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipManager'
+          description: ''
   /api/v2/relationship-manager/{uuid}/:
     get:
       operationId: api_v2_relationship_manager_retrieve
@@ -6152,271 +6472,8 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/allocations-by-asset/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_allocations_by_asset_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AllocationByAsset'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/asset-concentration-risk/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_asset_concentration_risk_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AssetConcentrationRisk'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/aum/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_aum_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/aum-evolution/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_aum_evolution_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AUMEvoluation'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/aum-portfolio-risk/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_aum_portfolio_risk_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AUMPortfolioRisk'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/client-by-risk/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_client_by_risk_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/client-by-status/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_client_by_status_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/client-ranking/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_client_ranking_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientRanking'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/inflows-outflows/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_inflows_outflows_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/portfolio-risk-performance/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_portfolio_risk_performance_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
-      security:
-      - cookieAuth: []
-      - jwtAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RelationshipManager'
-          description: ''
-  /api/v2/relationship-manager/{uuid}/analytics/total-active-clients/:
-    get:
-      operationId: api_v2_relationship_manager_analytics_total_active_clients_retrieve
-      description: ''
-      parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - api
+      - Application
+      - RelationShipManager
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -6433,7 +6490,8 @@ paths:
       operationId: api_v2_relationship_manager_me_retrieve
       description: ''
       tags:
-      - api
+      - Application
+      - RelationShipManager
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -6479,7 +6537,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -6525,7 +6583,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -6577,7 +6635,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -6623,7 +6681,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - Application
       security:
       - cookieAuth: []
       - jwtAuth: []
@@ -7317,9 +7375,11 @@ components:
           format: date-time
           nullable: true
         title:
-          allOf:
-          - $ref: '#/components/schemas/TitleEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         first_name:
           type: string
           nullable: true
@@ -7330,13 +7390,17 @@ components:
           type: string
           nullable: true
         gender:
-          allOf:
+          nullable: true
+          oneOf:
           - $ref: '#/components/schemas/GenderEnum'
-          nullable: true
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         marital_status:
-          allOf:
-          - $ref: '#/components/schemas/MaritalStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         phone_number:
           type: string
           nullable: true
@@ -7348,9 +7412,11 @@ components:
           type: string
           maxLength: 5
         employment_status:
-          allOf:
-          - $ref: '#/components/schemas/EmploymentStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         profession:
           type: string
           nullable: true
@@ -7766,6 +7832,9 @@ components:
       - date_from
       - date_to
       - key
+    BlankEnum:
+      enum:
+      - ''
     Category:
       type: object
       properties:
@@ -7824,9 +7893,11 @@ components:
           type: string
           format: date
         title:
-          allOf:
-          - $ref: '#/components/schemas/TitleEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         first_name:
           type: string
           nullable: true
@@ -7837,20 +7908,26 @@ components:
           type: string
           nullable: true
         gender:
-          allOf:
+          nullable: true
+          oneOf:
           - $ref: '#/components/schemas/GenderEnum'
-          nullable: true
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         marital_status:
-          allOf:
-          - $ref: '#/components/schemas/MaritalStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         language:
           type: string
           maxLength: 5
         employment_status:
-          allOf:
-          - $ref: '#/components/schemas/EmploymentStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         activated:
           type: string
           format: date-time
@@ -7991,9 +8068,11 @@ components:
           format: date-time
           nullable: true
         title:
-          allOf:
-          - $ref: '#/components/schemas/TitleEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         first_name:
           type: string
           nullable: true
@@ -8004,13 +8083,17 @@ components:
           type: string
           nullable: true
         gender:
-          allOf:
+          nullable: true
+          oneOf:
           - $ref: '#/components/schemas/GenderEnum'
-          nullable: true
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         marital_status:
-          allOf:
-          - $ref: '#/components/schemas/MaritalStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         phone_number:
           type: string
           nullable: true
@@ -8022,9 +8105,11 @@ components:
           type: string
           maxLength: 5
         employment_status:
-          allOf:
-          - $ref: '#/components/schemas/EmploymentStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         profession:
           type: string
           nullable: true
@@ -8377,9 +8462,10 @@ components:
           minimum: 0.01
           nullable: true
         duration:
-          allOf:
-          - $ref: '#/components/schemas/DurationEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DurationEnum'
+          - $ref: '#/components/schemas/NullEnum'
       required:
       - asset
       - method
@@ -9447,6 +9533,9 @@ components:
           type: string
       required:
       - key
+    NullEnum:
+      enum:
+      - null
     OnboardingResponse:
       type: object
       properties:
@@ -10591,9 +10680,11 @@ components:
           format: date-time
           nullable: true
         title:
-          allOf:
-          - $ref: '#/components/schemas/TitleEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/TitleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         first_name:
           type: string
           nullable: true
@@ -10604,13 +10695,17 @@ components:
           type: string
           nullable: true
         gender:
-          allOf:
+          nullable: true
+          oneOf:
           - $ref: '#/components/schemas/GenderEnum'
-          nullable: true
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         marital_status:
-          allOf:
-          - $ref: '#/components/schemas/MaritalStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         phone_number:
           type: string
           nullable: true
@@ -10622,9 +10717,11 @@ components:
           type: string
           maxLength: 5
         employment_status:
-          allOf:
-          - $ref: '#/components/schemas/EmploymentStatusEnum'
           nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
         profession:
           type: string
           nullable: true
@@ -11906,7 +12003,9 @@ components:
         status:
           $ref: '#/components/schemas/StatusBd7Enum'
         result:
-          $ref: '#/components/schemas/ResultEnum'
+          oneOf:
+          - $ref: '#/components/schemas/ResultEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         created:
           type: string
           format: date-time
@@ -12020,7 +12119,9 @@ components:
         status:
           $ref: '#/components/schemas/StatusBd7Enum'
         result:
-          $ref: '#/components/schemas/ResultEnum'
+          oneOf:
+          - $ref: '#/components/schemas/ResultEnum'
+          - $ref: '#/components/schemas/BlankEnum'
         created:
           type: string
           format: date-time
